@@ -1,0 +1,47 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+<head>
+    <link th:href="@{/index.css}" rel="stylesheet"/>
+    <title>Task Lists</title>
+</head>
+<body>
+<h2>Task Lists</h2>
+
+<h3 th:if="${lists.isEmpty()}">You have no task lists</h3>
+
+<table th:if="${!lists.isEmpty()}">
+    <tr>
+        <td><strong>List Name</strong></td>
+        <td><strong>List Description</strong></td>
+        <td><strong>Delete List</strong></td>
+    </tr>
+    <tr th:each="list : ${lists}">
+        <td>
+            <a th:text="${list.name}" th:href="${'/list/' + list.name}"></a>
+        </td>
+        <td>
+            <span th:text="${list.description}"></span>
+        </td>
+        <td>
+            <form th:action="${'/deleteList/' + list.name}" method="POST">
+                <input type="submit" value="Delete List">
+            </form>
+        </td>
+    </tr>
+</table>
+
+<form action="/add-list" method="POST" th:object="${newList}" class="footer-form">
+    <label>
+        New List Name:
+        <input class="input-box-style" th:field="*{name}" type="text"/>
+    </label>
+    <br>
+    <label>
+        New List Description:
+        <input class="input-box-style" th:field="*{description}" type="text"/>
+    </label>
+    <br>
+    <input type="submit" value="Create new list">
+</form>
+</body>
+</html>

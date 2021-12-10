@@ -1,0 +1,72 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+<head>
+    <link th:href="@{/index.css}" rel="stylesheet"/>
+    <title th:text="${'Task List: ' + listName}"></title>
+</head>
+<body th:with="taskEnum=${T(com.example.lab4softwaredesign.model.TaskStatus)}">
+<h2 th:text="${'Task List: ' + listName}"></h2>
+
+<h3 th:if="${tasks.isEmpty()}">You have no tasks</h3>
+<!--<h3 th:if="${!tasks.isEmpty()}">Your tasks:</h3>-->
+<table th:if="${!tasks.isEmpty()}">
+    <tr>
+        <td><strong>Task Name</strong></td>
+        <td><strong>Task Description</strong></td>
+        <td><strong>Complete Task</strong></td>
+        <td><strong>Delete Task</strong></td>
+    </tr>
+    <tr th:each="task : ${tasks}"
+        th:with="isDone=${task.status == taskEnum.DONE}">
+        <td>
+            <span th:if="${!isDone}" th:text="${task.name}"></span>
+            <del th:if="${isDone}" th:text="${task.name}"></del>
+        </td>
+        <td>
+            <span th:if="${!isDone}" th:text="${task.description}"></span>
+            <del th:if="${isDone}" th:text="${task.description}"></del>
+        </td>
+        <td>
+            <form th:action="${listName + '/done/' + task.name}" method="POST"
+                  th:if="${!isDone}">
+                <input type="submit" value="Done task">
+            </form>
+        </td>
+        <td>
+            <form th:action="${listName + '/delete/' + task.name}" method="POST">
+                <input type="submit" value="Delete task">
+            </form>
+        </td>
+    </tr>
+</table>
+
+<form th:action="${'/addTask/' + listName}" method="POST" th:object="${newTask}" class="footer-form">
+    <label>
+        New Task Name:
+        <input class="input-box-style" th:field="*{name}" type="text"/>
+    </label>
+    <br>
+    <label>
+        New Task Description:
+        <input class="input-box-style" th:field="*{description}" type="text"/>
+    </label>
+    <br>
+    <label>
+        Status:
+        <select th:field="*{status}" name="taskStatus">
+            <option th:each="st : ${taskEnum.values()}"
+                    th:value="${st}" th:text="${st}"></option>
+        </select>
+    </label>
+    <br>
+    <input type="submit" value="Add new task">
+</form>
+
+<form th:action="${'/deleteList/' + listName}" method="POST">
+    <input type="submit" value="Delete this list">
+</form>
+
+<a href="/">To Main Page</a>
+
+</body>
+</html>

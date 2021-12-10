@@ -1,0 +1,31 @@
+td {
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid grey;
+    padding: 5px;
+}
+
+table {
+    border-collapse: collapse;
+    border: 1px solid grey;
+}
+
+table form {
+    display: contents;
+}
+
+.footer-form {
+    margin-top: 5px;
+    padding: 5px;
+    width: fit-content;
+    border: 1px solid grey;
+}
+
+form.footer-form > label {
+    display: inline-block;
+    margin: 5px;
+}
+
+.footer-form input[type="submit"] {
+    margin: 5px;
+}
